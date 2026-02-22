@@ -1,0 +1,38 @@
+name: phonebook
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/
+    depends_on:
+      - mariadb
+    environment:
+      - TZ=Asia/Bangkok
+
+  mariadb:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: bncc2026
+      MYSQL_DATABASE: crud_demo
+      TZ: Asia/Bangkok
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./crud_demo.sql:/docker-entrypoint-initdb.d/init.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: bncc2026
+    depends_on:
+      - mariadb
+
+volumes:
+  db_data:
