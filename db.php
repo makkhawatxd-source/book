@@ -1,11 +1,12 @@
 <?php
-$servername = "mariadb"; // ใช้ service name จาก docker-compose
-$username = "root"; // ปกติ XAMPP ใช้ root
-$password = "bncc2026";     // รหัสผ่านตามที่ตั้งไว้ใน docker-compose
-$dbname = "crud_demo";
+$servername = getenv('DB_HOST') ?: "mariadb"; // รองรับ Railway (DB_HOST) และ Docker (mariadb)
+$username = getenv('DB_USER') ?: "root";
+$password = getenv('DB_PASSWORD') ?: "bncc2026";
+$dbname = getenv('DB_NAME') ?: "crud_demo";
+$port = getenv('DB_PORT') ?: 3306;
 
 // สร้างการเชื่อมต่อ
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // เช็คการเชื่อมต่อ
 if ($conn->connect_error) {
