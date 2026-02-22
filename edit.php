@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: index.php");
         exit();
     } else {
-        echo "Error updating record: " . $conn->error;
+        echo "<div class='alert alert-danger'>Error updating record: " . $conn->error . "</div>";
     }
 }
 
@@ -48,59 +48,133 @@ if (isset($_GET['id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>แก้ไขข้อมูล</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>แก้ไขข้อมูลผู้ใช้ - ระบบสมุดโทรศัพท์</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>แก้ไขข้อมูลผู้ใช้</h2>
-    <form action="edit.php" method="POST">
-        <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+    <div class="container mt-5 mb-5 pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow">
+                    <div class="card-header bg-warning">
+                        <h4 class="m-0"><i class="bi bi-pencil-square me-2"></i>แก้ไขข้อมูลผู้ใช้</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="edit.php" method="POST">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($data['id']); ?>">
 
-        <label>ชื่อ:</label>
-        <input type="text" name="firstname" value="<?php echo $data['firstname']; ?>" required><br>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">ชื่อ <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="firstname"
+                                        value="<?php echo htmlspecialchars($data['firstname']); ?>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">นามสกุล <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="lastname"
+                                        value="<?php echo htmlspecialchars($data['lastname']); ?>" required>
+                                </div>
+                            </div>
 
-        <label>นามสกุล:</label>
-        <input type="text" name="lastname" value="<?php echo $data['lastname']; ?>" required><br>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">ชื่อเล่น</label>
+                                    <input type="text" class="form-control" name="nickname"
+                                        value="<?php echo htmlspecialchars($data['nickname'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">เบอร์โทร</label>
+                                    <input type="text" class="form-control" name="phone"
+                                        value="<?php echo htmlspecialchars($data['phone'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">วัน เดือน ปี เกิด</label>
+                                    <input type="date" class="form-control" name="dob"
+                                        value="<?php echo htmlspecialchars($data['dob'] ?? ''); ?>">
+                                </div>
+                            </div>
 
-        <label>ชื่อเล่น:</label>
-        <input type="text" name="nickname" value="<?php echo $data['nickname']; ?>"><br>
+                            <hr class="my-4">
+                            <h5 class="mb-3 text-secondary"><i class="bi bi-geo-alt-fill me-2"></i>ข้อมูลที่อยู่</h5>
 
-        <label>เบอร์โทร:</label>
-        <input type="text" name="phone" value="<?php echo $data['phone']; ?>"><br>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">บ้านเลขที่</label>
+                                    <input type="text" class="form-control" name="address_no"
+                                        value="<?php echo htmlspecialchars($data['address_no'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label fw-bold">หมู่ที่</label>
+                                    <input type="text" class="form-control" name="moo"
+                                        value="<?php echo htmlspecialchars($data['moo'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">ซอย</label>
+                                    <input type="text" class="form-control" name="soi"
+                                        value="<?php echo htmlspecialchars($data['soi'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">ถนน</label>
+                                    <input type="text" class="form-control" name="road"
+                                        value="<?php echo htmlspecialchars($data['road'] ?? ''); ?>">
+                                </div>
+                            </div>
 
-        <label>วัน เดือน ปี เกิด:</label>
-        <input type="date" name="dob" value="<?php echo $data['dob']; ?>"><br>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">ตำบล/แขวง</label>
+                                    <input type="text" class="form-control" name="subdistrict"
+                                        value="<?php echo htmlspecialchars($data['subdistrict'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">อำเภอ/เขต</label>
+                                    <input type="text" class="form-control" name="district"
+                                        value="<?php echo htmlspecialchars($data['district'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">จังหวัด</label>
+                                    <input type="text" class="form-control" name="province"
+                                        value="<?php echo htmlspecialchars($data['province'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">รหัสไปรษณีย์</label>
+                                    <input type="text" class="form-control" name="zipcode"
+                                        value="<?php echo htmlspecialchars($data['zipcode'] ?? ''); ?>">
+                                </div>
+                            </div>
 
-        <label>ที่อยู่ บ้านเลขที่:</label>
-        <input type="text" name="address_no" value="<?php echo $data['address_no']; ?>"><br>
+                            <hr class="my-4">
 
-        <label>หมู่ที่:</label>
-        <input type="text" name="moo" value="<?php echo $data['moo']; ?>"><br>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">อีเมล <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" name="email"
+                                    value="<?php echo htmlspecialchars($data['email'] ?? ''); ?>" required>
+                            </div>
 
-        <label>ซอย:</label>
-        <input type="text" name="soi" value="<?php echo $data['soi']; ?>"><br>
-
-        <label>ถนน:</label>
-        <input type="text" name="road" value="<?php echo $data['road']; ?>"><br>
-
-        <label>ตำบล:</label>
-        <input type="text" name="subdistrict" value="<?php echo $data['subdistrict']; ?>"><br>
-
-        <label>อำเภอ:</label>
-        <input type="text" name="district" value="<?php echo $data['district']; ?>"><br>
-
-        <label>จังหวัด:</label>
-        <input type="text" name="province" value="<?php echo $data['province']; ?>"><br>
-
-        <label>รหัสไปรษณีย์:</label>
-        <input type="text" name="zipcode" value="<?php echo $data['zipcode']; ?>"><br>
-
-        <label>อีเมล:</label>
-        <input type="email" name="email" value="<?php echo $data['email']; ?>" required><br><br>
-
-        <button type="submit">อัปเดตข้อมูล</button>
-        <a href="index.php">ยกเลิก</a>
-    </form>
+                            <div class="d-flex justify-content-between">
+                                <a href="index.php" class="btn btn-secondary px-4"><i
+                                        class="bi bi-x-circle me-2"></i>ยกเลิก</a>
+                                <button type="submit" class="btn btn-warning px-4"><i
+                                        class="bi bi-check2-square me-2"></i>อัปเดตข้อมูล</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
